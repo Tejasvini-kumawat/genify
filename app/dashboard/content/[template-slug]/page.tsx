@@ -22,15 +22,12 @@ const CreateNewContent = () => {
 
   const [aiOutput, setAiOutput] = useState<string>('');
   const { user } = useUser();
-  const { refreshUsage, totalUsage } = useUsage();
+  const { refreshUsage, totalUsage, creditLimit, hasExceededCredits } = useUsage();
   const [loading, setLoading] = useState(false);
   const [showCreditAlert, setShowCreditAlert] = useState(false);
 
   const selectedTemplate: TEMPLATE =
     Templates.find((item) => item.slug === slug) || Templates[0];
-
-  // Check if user has exceeded credit limit
-  const hasExceededCredits = totalUsage >= 10000;
 
   const GenerateAIContent = async (formData: any) => {
     // Check credit limit before generating content
@@ -67,6 +64,13 @@ const CreateNewContent = () => {
     console.log('✅ Saved in DB:', result);
   };
 
+  const formatCreditLimit = (limit: number) => {
+    if (limit === Infinity || limit >= 1000000) {
+      return 'Unlimited';
+    }
+    return limit.toLocaleString();
+  };
+
   return (
     <div className="p-10">
       <Link href={'/dashboard'}>
@@ -87,7 +91,7 @@ const CreateNewContent = () => {
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-2">Credit Limit Exceeded</h3>
               <p className="text-sm text-gray-500 mb-4">
-                You have used all your free credits ({totalUsage}/10,000 words). 
+                You have used all your credits ({totalUsage.toLocaleString()}/{formatCreditLimit(creditLimit)} words). 
                 Please upgrade your plan to continue generating content.
               </p>
               <div className="flex gap-3 justify-center">

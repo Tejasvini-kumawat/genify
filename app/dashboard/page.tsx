@@ -9,10 +9,15 @@ import Link from 'next/link'
 
 const Dashboard = () => {
   const [userSearchInput, setUserSearchInput] = React.useState<string>("");
-  const { totalUsage } = useUsage();
+  const { totalUsage, creditLimit, hasExceededCredits } = useUsage();
   const [showCreditWarning, setShowCreditWarning] = React.useState(true);
   
-  const hasExceededCredits = totalUsage >= 10000;
+  const formatCreditLimit = (limit: number) => {
+    if (limit === Infinity || limit >= 1000000) {
+      return 'Unlimited';
+    }
+    return limit.toLocaleString();
+  };
 
   return (
     <div>
@@ -27,7 +32,7 @@ const Dashboard = () => {
                   Credit Limit Exceeded
                 </h3>
                 <p className="text-sm text-red-700 mt-1">
-                  You have used all your free credits ({totalUsage.toLocaleString()}/10,000 words). 
+                  You have used all your credits ({totalUsage.toLocaleString()}/{formatCreditLimit(creditLimit)} words). 
                   Upgrade your plan to continue generating content.
                 </p>
               </div>

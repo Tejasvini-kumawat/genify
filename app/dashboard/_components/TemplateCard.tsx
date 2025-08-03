@@ -6,8 +6,7 @@ import { useUsage } from './UsageContext'
 import { AlertTriangle } from 'lucide-react'
 
 const TemplateCard = ( item:TEMPLATE) => {
-  const { totalUsage } = useUsage();
-  const hasExceededCredits = totalUsage >= 10000;
+  const { hasExceededCredits } = useUsage();
 
   const handleClick = (e: React.MouseEvent) => {
     if (hasExceededCredits) {

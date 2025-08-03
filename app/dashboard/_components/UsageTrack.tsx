@@ -5,9 +5,15 @@ import { useUsage } from './UsageContext';
 import { AlertTriangle } from 'lucide-react';
 
 const UsageTrack = () => {
-  const { totalUsage } = useUsage();
-  const hasExceededCredits = totalUsage >= 10000;
-  const usagePercentage = Math.min((totalUsage / 10000) * 100, 100);
+  const { totalUsage, creditLimit, hasExceededCredits, subscriptionStatus } = useUsage();
+  const usagePercentage = Math.min((totalUsage / creditLimit) * 100, 100);
+
+  const formatCreditLimit = (limit: number) => {
+    if (limit === Infinity || limit >= 1000000) {
+      return 'Unlimited';
+    }
+    return limit.toLocaleString();
+  };
 
   return (
     <div className='m-5'>
@@ -27,8 +33,13 @@ const UsageTrack = () => {
           ></div>
         </div>
         <h2 className={`text-sm my-2 ${hasExceededCredits ? 'text-red-100' : ''}`}>
-          {totalUsage}/10,000 Credit Used
+          {totalUsage.toLocaleString()}/{formatCreditLimit(creditLimit)} Credit Used
         </h2>
+        {subscriptionStatus && subscriptionStatus !== 'free' && (
+          <p className='text-xs text-green-100 mt-1'>
+            {subscriptionStatus === 'active' ? 'Active Plan' : subscriptionStatus}
+          </p>
+        )}
         {hasExceededCredits && (
           <p className='text-xs text-red-100 mt-1'>
             Upgrade required to continue

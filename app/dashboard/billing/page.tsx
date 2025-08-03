@@ -1,12 +1,38 @@
 "use client";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Check, Crown, Zap } from 'lucide-react';
+import { ArrowLeft, Check, Crown, Zap, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useUsage } from '../_components/UsageContext';
+import { redirectToCheckout } from '@/lib/stripe-client';
+import { useSearchParams } from 'next/navigation';
+import { useUser } from '@clerk/nextjs';
 
 const BillingPage = () => {
   const { totalUsage } = useUsage();
+  const { user } = useUser();
+  const searchParams = useSearchParams();
+  const [loading, setLoading] = useState<string | null>(null);
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  // Check for success/error messages from Stripe redirect
+  useEffect(() => {
+    const success = searchParams.get('success');
+    const canceled = searchParams.get('canceled');
+    const sessionId = searchParams.get('session_id');
+
+    if (success && sessionId) {
+      setMessage({
+        type: 'success',
+        text: 'Payment successful! Your subscription has been activated.'
+      });
+    } else if (canceled) {
+      setMessage({
+        type: 'error',
+        text: 'Payment was canceled. Please try again.'
+      });
+    }
+  }, [searchParams]);
 
   const plans = [
     {
@@ -20,7 +46,8 @@ const BillingPage = () => {
         'Community support'
       ],
       current: true,
-      popular: false
+      popular: false,
+      priceId: null
     },
     {
       name: 'Pro Plan',
@@ -36,7 +63,8 @@ const BillingPage = () => {
         'Team collaboration'
       ],
       current: false,
-      popular: true
+      popular: true,
+      priceId: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID || 'price_pro_monthly'
     },
     {
       name: 'Enterprise',
@@ -52,9 +80,43 @@ const BillingPage = () => {
         'Advanced analytics'
       ],
       current: false,
-      popular: false
+      popular: false,
+      priceId: process.env.NEXT_PUBLIC_STRIPE_ENTERPRISE_PRICE_ID || 'price_enterprise_monthly'
     }
   ];
+
+  const handleUpgrade = async (planName: string, priceId: string | null) => {
+    if (!priceId) {
+      setMessage({
+        type: 'error',
+        text: 'This plan is not available for purchase.'
+      });
+      return;
+    }
+
+    if (!user) {
+      setMessage({
+        type: 'error',
+        text: 'Please sign in to upgrade your plan.'
+      });
+      return;
+    }
+
+    setLoading(planName);
+    setMessage(null);
+
+    try {
+      await redirectToCheckout(priceId, planName);
+    } catch (error) {
+      console.error('Payment error:', error);
+      setMessage({
+        type: 'error',
+        text: 'Payment failed. Please try again.'
+      });
+    } finally {
+      setLoading(null);
+    }
+  };
 
   return (
     <div className="p-10">
@@ -64,6 +126,24 @@ const BillingPage = () => {
           Back to Dashboard
         </Button>
       </Link>
+
+      {/* Success/Error Messages */}
+      {message && (
+        <div className={`mb-6 p-4 rounded-lg ${
+          message.type === 'success' 
+            ? 'bg-green-50 border border-green-200 text-green-800' 
+            : 'bg-red-50 border border-red-200 text-red-800'
+        }`}>
+          <div className="flex items-center">
+            {message.type === 'success' ? (
+              <Check className="w-5 h-5 mr-2" />
+            ) : (
+              <Crown className="w-5 h-5 mr-2" />
+            )}
+            {message.text}
+          </div>
+        </div>
+      )}
 
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Choose Your Plan</h1>
@@ -118,12 +198,15 @@ const BillingPage = () => {
               ) : (
                 <Button 
                   className={`w-full ${plan.popular ? 'bg-primary hover:bg-primary/90' : ''}`}
-                  onClick={() => {
-                    // Add payment integration logic here
-                    alert('Payment integration would be implemented here. For now, this is a demo.');
-                  }}
+                  onClick={() => handleUpgrade(plan.name, plan.priceId)}
+                  disabled={loading === plan.name}
                 >
-                  {plan.popular ? (
+                  {loading === plan.name ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Processing...
+                    </>
+                  ) : plan.popular ? (
                     <>
                       <Zap className="w-4 h-4 mr-2" />
                       Upgrade Now

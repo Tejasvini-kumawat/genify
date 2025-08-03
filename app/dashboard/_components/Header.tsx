@@ -1,5 +1,6 @@
 import { Search } from 'lucide-react'
 import React from 'react'
+import { UserButton } from '@clerk/nextjs'
 
 const Header = () => {
   return (
@@ -8,10 +9,18 @@ const Header = () => {
             <Search/>
             <input type='text' placeholder='Search...' className='outline-none' />
         </div>
-        <div>
+        <div className='flex items-center gap-4'>
             <h2 className='bg-primary p-1 rounded-full text-xs text-white px-2'>
                 🔥Join Membership just at $9.99/month
             </h2>
+            <UserButton 
+              afterSignOutUrl="/"
+              appearance={{
+                elements: {
+                  avatarBox: "w-8 h-8"
+                }
+              }}
+            />
         </div>
     </div>
   )
