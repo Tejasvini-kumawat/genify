@@ -10,13 +10,35 @@ import { Copy, Check } from 'lucide-react';
 interface Props{
   aiOutput:string
 }
+
+// Function to convert RTF to plain text
+const convertRTFToPlainText = (text: string): string => {
+  if (!text || typeof text !== 'string') return '';
+  
+  // Handle RTF content
+  if (text.startsWith('{\\rtf1')) {
+    return text
+      .replace(/\\rtf1[^}]*/, '') // Remove RTF header
+      .replace(/\\[a-z0-9-]+\d*\s?/g, '') // Remove RTF commands
+      .replace(/[{}]/g, '') // Remove braces
+      .replace(/\\'/g, "'") // Handle escaped apostrophes
+      .replace(/\\"/g, '"') // Handle escaped quotes
+      .replace(/\\\s/g, ' ') // Handle escaped spaces
+      .replace(/\s+/g, ' ') // Normalize whitespace
+      .trim();
+  }
+  
+  return text;
+};
+
 const OutputSection = ( {aiOutput}:Props) => {
   const editorRef:any=useRef(Editor);
   const [copied, setCopied] = useState(false);
 
   useEffect(()=>{
-const editorInstance=editorRef.current.getInstance()
-editorInstance.setMarkdown(aiOutput)
+    const editorInstance = editorRef.current.getInstance();
+    const cleanText = convertRTFToPlainText(aiOutput);
+    editorInstance.setMarkdown(cleanText);
   },[aiOutput])
 
   const handleCopy = async () => {

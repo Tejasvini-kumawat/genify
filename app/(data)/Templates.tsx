@@ -4,7 +4,7 @@ export default  [
         desc:'An AI tool that generate blog title depends on yout blog information',
         category:'Blog',
         icon:'https://cdn-icons-png.flaticon.com/128/4186/4186534.png',
-        aiPrompt:'Give me 5 blog topic idea in bullet wise only based on give niche & outline and give me result in Rich text editor format',
+        aiPrompt:'Give me 5 blog topic ideas in bullet points only based on the given niche & outline. Provide the result in plain text format with clear bullet points.',
         slug:'generate-blog-title',
         form:[
             {
@@ -27,7 +27,7 @@ export default  [
         category: 'blog',
         icon: 'https://cdn-icons-png.flaticon.com/128/4905/4905454.png',
         slug: 'blog-content-generation',
-        aiPrompt: 'Generate Blog Content based on topic and outline in rich text editor format',
+        aiPrompt: 'Generate Blog Content based on topic and outline. Provide the result in plain text format with proper paragraphs and formatting.',
         form: [
             {
                 label: 'Enter your blog topic',
@@ -48,7 +48,7 @@ export default  [
         category: 'Blog',
         icon: 'https://cdn-icons-png.flaticon.com/128/11497/11497847.png',
         slug: 'blog-topic-idea',
-        aiPrompt: 'Generate top 5 Blog Topic Ideas in bullet point only, (no Description) based on niche in rich text editor format',
+        aiPrompt: 'Generate top 5 Blog Topic Ideas in bullet points only (no descriptions) based on the given niche. Provide the result in plain text format.',
         form: [
             {
                 label: 'Enter your Niche',
@@ -64,16 +64,16 @@ export default  [
         category: 'Youtube Tools',
         icon: 'https://cdn-icons-png.flaticon.com/128/402/402075.png',
         slug: 'youtube-seo-title',
-        aiPrompt: 'Give me Best SEO optimized high ranked 5 title ideas bullet wise only bases on keywords and outline and give me result in HTML tags format',
+        aiPrompt: 'Give me the best 5 SEO optimized high-ranked title ideas in bullet points based on the given keywords and outline. Provide the result in plain text format.',
         form: [
             {
-                label: 'Enter your youtube video topic keyowords',
+                label: 'Enter your youtube video topic keywords',
                 field: 'input',
                 name: 'keywords',
                 required:true
             },
             {
-                label: 'Enter youtube description Outline here',
+                label: 'Enter youtube description outline here',
                 field: 'textarea',
                 name: 'outline'
             }
@@ -87,7 +87,7 @@ export default  [
         category: 'Youtube Tool',
         icon: 'https://cdn-icons-png.flaticon.com/128/2111/2111748.png',
         slug: 'youtube-description',
-        aiPrompt: 'Generate Youtube description with emoji under 4-5 lines based on topic and outline in rich text editor format',
+        aiPrompt: 'Generate a YouTube description with emojis under 4-5 lines based on the given topic and outline. Provide the result in plain text format.',
         form: [
             {
                 label: 'Enter your blog topic/title',
@@ -96,7 +96,7 @@ export default  [
                 required:true
             },
             {
-                label: 'Enter youtube Outline here',
+                label: 'Enter youtube outline here',
                 field: 'textarea',
                 name: 'outline'
             }

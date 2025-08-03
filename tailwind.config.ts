@@ -1,5 +1,6 @@
 // @ts-ignore
 const config = {
+  darkMode: 'class',
   content: {
     files: [
       './app/**/*.{ts,tsx}',           // app directory (Next.js 13+)

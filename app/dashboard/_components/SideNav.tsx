@@ -26,9 +26,9 @@ const SideNav = () => {
       path: '/dashboard/billing',
     },
     {
-      name: 'Setting',
+      name: 'Settings',
       icon: Settings,
-      path: '/dashboard/setting',
+      path: '/dashboard/settings',
     },
   ]
 
@@ -39,11 +39,11 @@ const SideNav = () => {
   }, [path])
 
   return (
-    <div className='h-screen relative p-5 shadow-sm border w-60 bg-white'>
+    <div className='h-screen relative p-5 shadow-sm border border-gray-200 dark:border-gray-800 w-60 bg-white dark:bg-black'>
       <div className='flex justify-center mb-8'>
         <Image src='/logo.svg' alt='logo' width={120} height={100} />
       </div>
-      <hr className='my-6 border' />
+      <hr className='my-6 border border-gray-200 dark:border-gray-700' />
 
       <div className='mt-3'>
         {MenuList.map((item) => (
@@ -51,7 +51,7 @@ const SideNav = () => {
             href={item.path}
             key={item.path}
             className={`flex gap-2 mb-2 p-3 hover:bg-primary hover:text-white items-center rounded-md transition-colors duration-200 cursor-pointer 
-              ${path === item.path ? 'bg-primary text-white' : ''}`}
+              ${path === item.path ? 'bg-primary text-white' : 'text-gray-700 dark:text-gray-300'}`}
           >
             <item.icon className='h-6 w-6' />
             <h2 className='text-lg'>{item.name}</h2>

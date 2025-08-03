@@ -168,13 +168,13 @@ const BillingPage = () => {
             key={index}
             className={`relative p-6 border rounded-lg shadow-sm ${
               plan.popular 
-                ? 'border-primary bg-primary/5' 
+                ? 'border-primary bg-gradient-genify-subtle' 
                 : 'border-gray-200 bg-white'
             }`}
           >
             {plan.popular && (
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                <span className="bg-primary text-white px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+                <span className="bg-gradient-genify text-white px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
                   <Crown className="w-3 h-3" />
                   Most Popular
                 </span>
@@ -197,7 +197,7 @@ const BillingPage = () => {
                 </Button>
               ) : (
                 <Button 
-                  className={`w-full ${plan.popular ? 'bg-primary hover:bg-primary/90' : ''}`}
+                  className={`w-full ${plan.popular ? 'bg-gradient-genify hover:opacity-90 text-white' : ''}`}
                   onClick={() => handleUpgrade(plan.name, plan.priceId)}
                   disabled={loading === plan.name}
                 >
