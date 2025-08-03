@@ -5,6 +5,8 @@ import Image from 'next/image'
 import React, { useEffect } from 'react'
 import { Home as HomeIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
+import UsageTrack from './UsageTrack'
+import Link from 'next/link';
 
 const SideNav = () => {
   const MenuList = [
@@ -37,7 +39,7 @@ const SideNav = () => {
   }, [path])
 
   return (
-    <div className='h-screen p-5 shadow-sm border w-60 bg-white'>
+    <div className='h-screen relative p-5 shadow-sm border w-60 bg-white'>
       <div className='flex justify-center mb-8'>
         <Image src='/logo.svg' alt='logo' width={120} height={100} />
       </div>
@@ -45,16 +47,21 @@ const SideNav = () => {
 
       <div className='mt-3'>
         {MenuList.map((item) => (
-          <div
+          <Link
+            href={item.path}
             key={item.path}
             className={`flex gap-2 mb-2 p-3 hover:bg-primary hover:text-white items-center rounded-md transition-colors duration-200 cursor-pointer 
               ${path === item.path ? 'bg-primary text-white' : ''}`}
           >
             <item.icon className='h-6 w-6' />
             <h2 className='text-lg'>{item.name}</h2>
-          </div>
+          </Link>
         ))}
+      </div >
+      <div className='absolute bottom-10 left-0 w-full' >
+  <UsageTrack />
       </div>
+    
     </div>
   )
 }

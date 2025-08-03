@@ -7,15 +7,16 @@ import Image from 'next/image';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Loader2Icon } from 'lucide-react';
+import { Loader2Icon, AlertTriangle } from 'lucide-react';
 
 interface PROPS {
   selectedTemplate?: TEMPLATE;
   userFormInput: (formData: any) => void;
   loading: boolean;
+  hasExceededCredits?: boolean;
 }
 
-const FormSection = ({ selectedTemplate, userFormInput, loading }: PROPS) => {
+const FormSection = ({ selectedTemplate, userFormInput, loading, hasExceededCredits }: PROPS) => {
   const [formData, setFormData] = useState<Record<string, any>>({}); // ✅ properly typed default state
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -49,6 +50,20 @@ const FormSection = ({ selectedTemplate, userFormInput, loading }: PROPS) => {
       )}
       <h2 className='font-bold text-2xl mb-2 text-primary'>{selectedTemplate?.name}</h2>
       <p className='text-gray-500 text-sm'>{selectedTemplate?.desc}</p>
+      
+      {/* Credit Limit Warning */}
+      {hasExceededCredits && (
+        <div className='mt-4 p-3 bg-red-50 border border-red-200 rounded-md'>
+          <div className='flex items-center gap-2 text-red-700'>
+            <AlertTriangle className='w-4 h-4' />
+            <span className='text-sm font-medium'>Credit Limit Exceeded</span>
+          </div>
+          <p className='text-xs text-red-600 mt-1'>
+            You have used all your free credits. Please upgrade to continue.
+          </p>
+        </div>
+      )}
+      
       <form className='mt-6' onSubmit={onsubmit}>
         {selectedTemplate?.form?.map((item, index) => (
           <div key={index} className='my-2 flex flex-col gap-2 mb-7'>
@@ -58,20 +73,26 @@ const FormSection = ({ selectedTemplate, userFormInput, loading }: PROPS) => {
                 name={item.name}
                 required={item?.required}
                 onChange={handleInputChange}
+                disabled={hasExceededCredits}
               />
             ) : item.field === 'textarea' ? (
               <Textarea
                 name={item.name}
                 required={item?.required}
                 onChange={handleInputChange}
+                disabled={hasExceededCredits}
               />
             ) : null}
           </div>
         ))}
 
-        <Button disabled={loading} type='submit' className='w-full py-6'>
+        <Button 
+          disabled={loading || hasExceededCredits} 
+          type='submit' 
+          className='w-full py-6'
+        >
           {loading && <Loader2Icon className='animate-spin mr-2' />}
-          Generate Content
+          {hasExceededCredits ? 'Upgrade Required' : 'Generate Content'}
         </Button>
       </form>
     </div>
