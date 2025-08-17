@@ -1,7 +1,25 @@
 import { Search } from 'lucide-react'
-import React from 'react'
+import React, { useState } from 'react'
+import { useDebouncedCallback } from '@/utils/hooks/useDebounce'
 
-const SearchSection = ({onSearchInput}:any) => {
+interface SearchSectionProps {
+  onSearchInput: (value: string) => void;
+  debounceDelay?: number;
+}
+
+const SearchSection = ({ onSearchInput, debounceDelay = 300 }: SearchSectionProps) => {
+  const [searchValue, setSearchValue] = useState('');
+
+  // Create debounced search function
+  const debouncedSearch = useDebouncedCallback(onSearchInput, debounceDelay);
+
+  // Handle input change with debouncing
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchValue(value);
+    debouncedSearch(value);
+  };
+
   return (
     <div className='p-6 lg:p-10 bg-gradient-to-br from-purple-500 via-purple-700 to-blue-600 rounded-lg'>
       <h2 className='text-2xl lg:text-3xl font-bold flex flex-col justify-center items-center text-white text-center'>
@@ -15,7 +33,8 @@ const SearchSection = ({onSearchInput}:any) => {
           <input 
             type='text' 
             placeholder='Search for templates...' 
-            onChange={(event)=>onSearchInput(event.target.value)} 
+            value={searchValue}
+            onChange={handleInputChange}
             className='bg-transparent w-full outline-none text-black placeholder-gray-500' 
           />
         </div>

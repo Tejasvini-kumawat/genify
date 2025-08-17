@@ -12,6 +12,9 @@ const Dashboard = () => {
   const { totalUsage, creditLimit, hasExceededCredits } = useUsage();
   const [showCreditWarning, setShowCreditWarning] = React.useState(true);
   
+  // Debounce delay in milliseconds
+  const DEBOUNCE_DELAY = 300;
+  
   const formatCreditLimit = (limit: number) => {
     if (limit === Infinity || limit >= 1000000) {
       return 'Unlimited';
@@ -57,10 +60,16 @@ const Dashboard = () => {
       )}
 
       {/* Search Section */}
-      <SearchSection onSearchInput={(value:string)=>{setUserSearchInput(value)}}/>
+      <SearchSection 
+        onSearchInput={(value: string) => setUserSearchInput(value)}
+        debounceDelay={DEBOUNCE_DELAY}
+      />
       
       {/* Template List Section  */}
-      <TemplateListSection userSearchInput={userSearchInput} />
+      <TemplateListSection 
+        userSearchInput={userSearchInput} 
+        debounceDelay={DEBOUNCE_DELAY}
+      />
     </div>
   )
 }
