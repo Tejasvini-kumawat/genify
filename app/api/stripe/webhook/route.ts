@@ -8,7 +8,8 @@ import { eq } from 'drizzle-orm';
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
-  const signature = headers().get('stripe-signature')!;
+  const headersList = await headers();
+  const signature = headersList.get('stripe-signature')!;
 
   let event: Stripe.Event;
 
@@ -72,8 +73,8 @@ export async function POST(req: NextRequest) {
               .set({
                 stripeSubscriptionId: subscription.id,
                 status: subscription.status,
-                currentPeriodStart: new Date(subscription.current_period_start * 1000),
-                currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+                currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
+                currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
                 updatedAt: new Date(),
               })
               .where(eq(UserSubscriptions.userId, subscription.metadata.userId));
@@ -95,8 +96,8 @@ export async function POST(req: NextRequest) {
             await db.update(UserSubscriptions)
               .set({
                 status: updatedSubscription.status,
-                currentPeriodStart: new Date(updatedSubscription.current_period_start * 1000),
-                currentPeriodEnd: new Date(updatedSubscription.current_period_end * 1000),
+                currentPeriodStart: new Date((updatedSubscription as any).current_period_start * 1000),
+                currentPeriodEnd: new Date((updatedSubscription as any).current_period_end * 1000),
                 cancelAtPeriodEnd: updatedSubscription.cancel_at_period_end,
                 updatedAt: new Date(),
               })

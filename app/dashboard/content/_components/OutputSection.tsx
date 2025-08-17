@@ -1,10 +1,10 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button';
-import { useRef } from 'react';
-import '@toast-ui/editor/dist/toastui-editor.css';
-
-import { Editor } from '@toast-ui/react-editor';
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Highlight from '@tiptap/extension-highlight';
+import CodeBlock from '@tiptap/extension-code-block';
 import { Copy, Check } from 'lucide-react';
 
 interface Props{
@@ -32,23 +32,39 @@ const convertRTFToPlainText = (text: string): string => {
 };
 
 const OutputSection = ( {aiOutput}:Props) => {
-  const editorRef:any=useRef(Editor);
   const [copied, setCopied] = useState(false);
 
-  useEffect(()=>{
-    const editorInstance = editorRef.current.getInstance();
-    const cleanText = convertRTFToPlainText(aiOutput);
-    editorInstance.setMarkdown(cleanText);
-  },[aiOutput])
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Highlight,
+      CodeBlock,
+    ],
+    content: '',
+    editable: false,
+  });
+
+  useEffect(() => {
+    if (editor) {
+      const cleanText = convertRTFToPlainText(aiOutput);
+      editor.commands.setContent(cleanText);
+    }
+  }, [aiOutput, editor]);
 
   const handleCopy = async () => {
     try {
-      // Get the markdown content from the editor
-      const editorInstance = editorRef.current.getInstance();
-      const markdownContent = editorInstance.getMarkdown();
+      if (!editor) return;
+      
+      // Get the HTML content from the editor
+      const htmlContent = editor.getHTML();
+      
+      // Convert HTML to plain text for clipboard
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = htmlContent;
+      const plainText = tempDiv.textContent || tempDiv.innerText || '';
       
       // Copy to clipboard
-      await navigator.clipboard.writeText(markdownContent);
+      await navigator.clipboard.writeText(plainText);
       
       // Show success feedback
       setCopied(true);
@@ -56,10 +72,14 @@ const OutputSection = ( {aiOutput}:Props) => {
     } catch (err) {
       console.error('Failed to copy: ', err);
       // Fallback for older browsers
+      if (!editor) return;
+      
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = editor.getHTML();
+      const plainText = tempDiv.textContent || tempDiv.innerText || '';
+      
       const textArea = document.createElement('textarea');
-      const editorInstance = editorRef.current.getInstance();
-      const markdownContent = editorInstance.getMarkdown();
-      textArea.value = markdownContent;
+      textArea.value = plainText;
       document.body.appendChild(textArea);
       textArea.select();
       document.execCommand('copy');
@@ -71,8 +91,8 @@ const OutputSection = ( {aiOutput}:Props) => {
   };
 
   return (
-    <div className='bg-white shadow-lg border  rounded-lg'>
-        <div className='flex justify-between items-center p-5 '>
+    <div className='bg-white shadow-lg border rounded-lg'>
+        <div className='flex justify-between items-center p-5'>
             <h2 className='font-medium text-lg'>Your Result</h2>
             <Button 
               onClick={handleCopy}
@@ -92,15 +112,12 @@ const OutputSection = ( {aiOutput}:Props) => {
               )}
             </Button>
         </div>
-        <Editor
-        ref={editorRef}
-    initialValue="Your generated content will appear here."
-  height="600px"
-    
-    initialEditType="wysiwyg"
-    useCommandShortcut={true}
-    onChange={()=>console.log(editorRef.current.getInstance().getMarkdown())}
-  /></div>
+        <div className='px-5 pb-5'>
+          <div className='border rounded-lg p-4 min-h-[600px] bg-gray-50'>
+            <EditorContent editor={editor} />
+          </div>
+        </div>
+    </div>
   )
 }
 
