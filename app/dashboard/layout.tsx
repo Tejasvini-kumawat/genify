@@ -13,7 +13,7 @@ const layout = ({
 
   return (
     <UsageContextProvider>
-      <div className='bg-slate-100 dark:bg-black min-h-screen flex'>
+      <div className='bg-slate-100 dark:bg-gray-900 min-h-screen flex'>
         {/* Mobile Sidebar Overlay */}
         {isSidebarOpen && (
           <div 

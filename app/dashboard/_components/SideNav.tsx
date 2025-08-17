@@ -50,7 +50,7 @@ const SideNav = ({ onClose }: SideNavProps) => {
   };
 
   return (
-    <div className='h-screen relative p-5 shadow-sm border border-gray-200 dark:border-gray-800 w-64 bg-white dark:bg-black'>
+    <div className='h-screen relative p-5 shadow-lg border-r border-gray-200 dark:border-gray-700 w-64 bg-white dark:bg-gray-800 overflow-y-auto'>
       {/* Mobile Close Button */}
       <div className='flex justify-between items-center mb-8 lg:hidden'>
         <Image src='/logo.svg' alt='logo' width={120} height={100} />
@@ -58,7 +58,7 @@ const SideNav = ({ onClose }: SideNavProps) => {
           variant="ghost"
           size="sm"
           onClick={handleMenuClick}
-          className="lg:hidden"
+          className="lg:hidden hover:bg-gray-100 dark:hover:bg-gray-700"
         >
           <X className="h-6 w-6" />
         </Button>
@@ -69,7 +69,7 @@ const SideNav = ({ onClose }: SideNavProps) => {
         <Image src='/logo.svg' alt='logo' width={120} height={100} />
       </div>
 
-      <hr className='my-6 border border-gray-200 dark:border-gray-700' />
+      <hr className='my-6 border-gray-200 dark:border-gray-600' />
 
       <div className='mt-3'>
         {MenuList.map((item) => (
@@ -77,11 +77,14 @@ const SideNav = ({ onClose }: SideNavProps) => {
             href={item.path}
             key={item.path}
             onClick={handleMenuClick}
-            className={`flex gap-2 mb-2 p-3 hover:bg-primary hover:text-white items-center rounded-md transition-colors duration-200 cursor-pointer 
-              ${path === item.path ? 'bg-primary text-white' : 'text-gray-700 dark:text-gray-300'}`}
+            className={`flex gap-2 mb-2 p-3 hover:bg-primary hover:text-primary-foreground items-center rounded-lg transition-all duration-200 cursor-pointer 
+              ${path === item.path 
+                ? 'bg-primary text-primary-foreground shadow-sm' 
+                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+              }`}
           >
             <item.icon className='h-6 w-6' />
-            <h2 className='text-lg'>{item.name}</h2>
+            <h2 className='text-lg font-medium'>{item.name}</h2>
           </Link>
         ))}
       </div>
