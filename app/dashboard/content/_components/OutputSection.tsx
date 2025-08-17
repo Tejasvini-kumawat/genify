@@ -42,6 +42,7 @@ const OutputSection = ( {aiOutput}:Props) => {
     ],
     content: '',
     editable: false,
+    immediatelyRender: false,
   });
 
   useEffect(() => {

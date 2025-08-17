@@ -1,10 +1,20 @@
 import Stripe from 'stripe';
 
+let stripeInstance: Stripe | null = null;
+
 // Initialize Stripe with your secret key
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-12-18.acacia',
-  typescript: true,
-});
+export const stripe = () => {
+  if (!stripeInstance) {
+    if (!process.env.STRIPE_SECRET_KEY) {
+      throw new Error('Stripe secret key not configured');
+    }
+    stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2025-07-30.basil',
+      typescript: true,
+    });
+  }
+  return stripeInstance;
+};
 
 // Stripe publishable key for client-side
 export const getStripePublishableKey = () => {

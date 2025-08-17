@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Check, Crown, Zap, Loader2 } from 'lucide-react';
 import Link from 'next/link';
@@ -8,7 +8,7 @@ import { redirectToCheckout } from '@/lib/stripe-client';
 import { useSearchParams } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 
-const BillingPage = () => {
+const BillingContent = () => {
   const { totalUsage } = useUsage();
   const { user } = useUser();
   const searchParams = useSearchParams();
@@ -239,6 +239,14 @@ const BillingPage = () => {
         </Button>
       </div>
     </div>
+  );
+};
+
+const BillingPage = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <BillingContent />
+    </Suspense>
   );
 };
 

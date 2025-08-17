@@ -54,7 +54,7 @@ const CreateNewContent = () => {
   };
 
   const saveInDb = async (formData: any, slug: any, aiRes: string) => {
-    const result = await db.insert(AIOutput).values({
+    const result = await db().insert(AIOutput).values({
       formData: JSON.stringify(formData) || '',
       templateSlug: slug || '',
       aiResponse: aiRes,

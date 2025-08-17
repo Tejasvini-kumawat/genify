@@ -27,7 +27,7 @@ const HistoryPage = () => {
     const fetchHistory = async () => {
       if (!user?.primaryEmailAddress?.emailAddress) return;
       setLoading(true);
-      const result = await db
+      const result = await db()
         .select()
         .from(AIOutput)
         .where(eq(AIOutput.createdBy, user.primaryEmailAddress.emailAddress));

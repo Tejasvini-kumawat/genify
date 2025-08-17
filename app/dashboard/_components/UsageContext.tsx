@@ -77,7 +77,7 @@ export const UsageContextProvider = ({ children }: { children: React.ReactNode }
       
       // Fetch user's subscription to determine credit limit
       try {
-        const subscriptionResult = await db
+        const subscriptionResult = await db()
           .select()
           .from(UserSubscriptions)
           .where(eq(UserSubscriptions.userId, user.id))
@@ -105,7 +105,7 @@ export const UsageContextProvider = ({ children }: { children: React.ReactNode }
 
       // Fetch usage data
       try {
-        const result = await db
+        const result = await db()
           .select()
           .from(AIOutput)
           .where(eq(AIOutput.createdBy, user.primaryEmailAddress.emailAddress));
