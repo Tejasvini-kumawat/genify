@@ -119,9 +119,17 @@
 /* TipTap Editor Styles */
 .ProseMirror {
   outline: none;
-  min-height: 500px;
+  min-height: 400px;
   padding: 1rem;
   line-height: 1.6;
+  font-size: 14px;
+}
+
+@media (min-width: 1024px) {
+  .ProseMirror {
+    min-height: 500px;
+    font-size: 16px;
+  }
 }
 
 .ProseMirror p {
@@ -139,12 +147,21 @@
   font-weight: 600;
 }
 
-.ProseMirror h1 { font-size: 1.875rem; }
-.ProseMirror h2 { font-size: 1.5rem; }
-.ProseMirror h3 { font-size: 1.25rem; }
-.ProseMirror h4 { font-size: 1.125rem; }
-.ProseMirror h5 { font-size: 1rem; }
-.ProseMirror h6 { font-size: 0.875rem; }
+.ProseMirror h1 { font-size: 1.5rem; }
+.ProseMirror h2 { font-size: 1.25rem; }
+.ProseMirror h3 { font-size: 1.125rem; }
+.ProseMirror h4 { font-size: 1rem; }
+.ProseMirror h5 { font-size: 0.875rem; }
+.ProseMirror h6 { font-size: 0.75rem; }
+
+@media (min-width: 1024px) {
+  .ProseMirror h1 { font-size: 1.875rem; }
+  .ProseMirror h2 { font-size: 1.5rem; }
+  .ProseMirror h3 { font-size: 1.25rem; }
+  .ProseMirror h4 { font-size: 1.125rem; }
+  .ProseMirror h5 { font-size: 1rem; }
+  .ProseMirror h6 { font-size: 0.875rem; }
+}
 
 .ProseMirror ul,
 .ProseMirror ol {
@@ -197,6 +214,7 @@
   border-collapse: collapse;
   width: 100%;
   margin: 1rem 0;
+  font-size: 0.875rem;
 }
 
 .ProseMirror th,
@@ -209,4 +227,55 @@
 .ProseMirror th {
   background-color: #f9fafb;
   font-weight: 600;
+}
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+  .mobile-hidden {
+    display: none !important;
+  }
+  
+  .mobile-full-width {
+    width: 100% !important;
+  }
+  
+  .mobile-text-center {
+    text-align: center !important;
+  }
+}
+
+/* Smooth transitions for mobile menu */
+.sidebar-transition {
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Mobile-first responsive design */
+.container-responsive {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-responsive {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container-responsive {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-responsive {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container-responsive {
+    max-width: 1280px;
+  }
 }

@@ -20,13 +20,13 @@ const Dashboard = () => {
   };
 
   return (
-    <div>
+    <div className="space-y-6">
       {/* Credit Limit Warning Banner */}
       {hasExceededCredits && showCreditWarning && (
-        <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <AlertTriangle className="h-5 w-5 text-red-400 mr-3" />
+        <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-lg">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex items-start sm:items-center">
+              <AlertTriangle className="h-5 w-5 text-red-400 mr-3 mt-0.5 sm:mt-0 flex-shrink-0" />
               <div>
                 <h3 className="text-sm font-medium text-red-800">
                   Credit Limit Exceeded
@@ -37,7 +37,7 @@ const Dashboard = () => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-shrink-0">
               <Link href="/dashboard/billing">
                 <Button size="sm" className="bg-red-600 hover:bg-red-700">
                   Upgrade Now
@@ -58,9 +58,9 @@ const Dashboard = () => {
 
       {/* Search Section */}
       <SearchSection onSearchInput={(value:string)=>{setUserSearchInput(value)}}/>
+      
       {/* Template List Section  */}
-   <TemplateListSection userSearchInput={userSearchInput} />
-    
+      <TemplateListSection userSearchInput={userSearchInput} />
     </div>
   )
 }

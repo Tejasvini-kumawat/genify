@@ -93,11 +93,11 @@ const OutputSection = ( {aiOutput}:Props) => {
 
   return (
     <div className='bg-white shadow-lg border rounded-lg'>
-        <div className='flex justify-between items-center p-5'>
+        <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 lg:p-5 gap-4'>
             <h2 className='font-medium text-lg'>Your Result</h2>
             <Button 
               onClick={handleCopy}
-              className='flex gap-2'
+              className='flex gap-2 w-full sm:w-auto'
               variant={copied ? 'outline' : 'default'}
             >
               {copied ? (
@@ -113,8 +113,8 @@ const OutputSection = ( {aiOutput}:Props) => {
               )}
             </Button>
         </div>
-        <div className='px-5 pb-5'>
-          <div className='border rounded-lg p-4 min-h-[600px] bg-gray-50'>
+        <div className='px-4 lg:px-5 pb-4 lg:pb-5'>
+          <div className='border rounded-lg p-4 min-h-[400px] lg:min-h-[600px] bg-gray-50'>
             <EditorContent editor={editor} />
           </div>
         </div>

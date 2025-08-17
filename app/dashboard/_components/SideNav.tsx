@@ -1,14 +1,19 @@
 'use client'
 
-import { FileClock, WalletCards, Settings } from 'lucide-react'
+import { FileClock, WalletCards, Settings, X } from 'lucide-react'
 import Image from 'next/image'
 import React, { useEffect } from 'react'
 import { Home as HomeIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import UsageTrack from './UsageTrack'
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
-const SideNav = () => {
+interface SideNavProps {
+  onClose?: () => void;
+}
+
+const SideNav = ({ onClose }: SideNavProps) => {
   const MenuList = [
     {
       name: 'Home',
@@ -38,11 +43,32 @@ const SideNav = () => {
     console.log('Current path:', path)
   }, [path])
 
+  const handleMenuClick = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
+
   return (
-    <div className='h-screen relative p-5 shadow-sm border border-gray-200 dark:border-gray-800 w-60 bg-white dark:bg-black'>
-      <div className='flex justify-center mb-8'>
+    <div className='h-screen relative p-5 shadow-sm border border-gray-200 dark:border-gray-800 w-64 bg-white dark:bg-black'>
+      {/* Mobile Close Button */}
+      <div className='flex justify-between items-center mb-8 lg:hidden'>
+        <Image src='/logo.svg' alt='logo' width={120} height={100} />
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleMenuClick}
+          className="lg:hidden"
+        >
+          <X className="h-6 w-6" />
+        </Button>
+      </div>
+
+      {/* Desktop Logo */}
+      <div className='flex justify-center mb-8 hidden lg:flex'>
         <Image src='/logo.svg' alt='logo' width={120} height={100} />
       </div>
+
       <hr className='my-6 border border-gray-200 dark:border-gray-700' />
 
       <div className='mt-3'>
@@ -50,6 +76,7 @@ const SideNav = () => {
           <Link
             href={item.path}
             key={item.path}
+            onClick={handleMenuClick}
             className={`flex gap-2 mb-2 p-3 hover:bg-primary hover:text-white items-center rounded-md transition-colors duration-200 cursor-pointer 
               ${path === item.path ? 'bg-primary text-white' : 'text-gray-700 dark:text-gray-300'}`}
           >
@@ -58,7 +85,7 @@ const SideNav = () => {
           </Link>
         ))}
       </div >
-      <div className='absolute bottom-10 left-0 w-full' >
+      <div className='absolute bottom-10 left-0 w-full px-5' >
   <UsageTrack />
       </div>
     

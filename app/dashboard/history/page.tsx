@@ -58,17 +58,17 @@ const HistoryPage = () => {
   };
 
   return (
-    <div className="p-10">
-      <h1 className="text-2xl font-bold mb-6">History</h1>
+    <div className="p-4 lg:p-10 space-y-6">
+      <h1 className="text-2xl lg:text-3xl font-bold mb-4 lg:mb-6">History</h1>
       <div className="overflow-x-auto bg-white rounded-lg shadow-md">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">TEMPLATE</th>
-              <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">AI RES</th>
-              <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">DATE</th>
-              <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">WORDS</th>
-              <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">ACTIONS</th>
+              <th className="px-4 lg:px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">TEMPLATE</th>
+              <th className="px-4 lg:px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider hidden md:table-cell">AI RES</th>
+              <th className="px-4 lg:px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">DATE</th>
+              <th className="px-4 lg:px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider hidden sm:table-cell">WORDS</th>
+              <th className="px-4 lg:px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">ACTIONS</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -83,38 +83,40 @@ const HistoryPage = () => {
                 
                 return (
                   <tr key={item.id}>
-                    <td className="px-6 py-4 whitespace-nowrap flex items-center gap-2">
-                      {template?.icon && (
-                        <Image src={template.icon} alt="icon" width={24} height={24} className="inline-block" />
-                      )}
-                      {item.templateSlug}
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-2">
+                        {template?.icon && (
+                          <Image src={template.icon} alt="icon" width={24} height={24} className="inline-block flex-shrink-0" />
+                        )}
+                        <span className="text-sm lg:text-base">{item.templateSlug}</span>
+                      </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap max-w-xs truncate" title={item.aiResponse}>
-                      {item.aiResponse.slice(0, 60)}...
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap max-w-xs truncate hidden md:table-cell" title={item.aiResponse}>
+                      <span className="text-sm">{item.aiResponse.slice(0, 60)}...</span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">{item.createdAt}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{item.aiResponse.split(/\s+/).length}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-sm lg:text-base">{item.createdAt}</td>
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-sm hidden sm:table-cell">{item.aiResponse.split(/\s+/).length}</td>
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                       <div className="flex gap-2">
                         <Button 
                           variant="outline" 
                           size="sm"
                           onClick={() => handleCopy(item.aiResponse, item.id)}
-                          className="flex items-center gap-1"
+                          className="flex items-center gap-1 text-xs lg:text-sm"
                         >
                           {isCopied ? (
                             <>
                               <Check className="w-3 h-3" />
-                              Copied
+                              <span className="hidden sm:inline">Copied</span>
                             </>
                           ) : (
                             <>
                               <Copy className="w-3 h-3" />
-                              Copy
+                              <span className="hidden sm:inline">Copy</span>
                             </>
                           )}
                         </Button>
-                        <Button variant="outline" size="sm">Edit</Button>
+                        <Button variant="outline" size="sm" className="text-xs lg:text-sm hidden sm:block">Edit</Button>
                       </div>
                     </td>
                   </tr>

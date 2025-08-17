@@ -72,17 +72,17 @@ const CreateNewContent = () => {
   };
 
   return (
-    <div className="p-10">
+    <div className="p-4 lg:p-10 space-y-6">
       <Link href={'/dashboard'}>
-        <Button>
+        <Button className="mb-4">
           <ArrowLeft /> Back
         </Button>
       </Link>
 
       {/* Credit Limit Alert */}
       {showCreditAlert && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md mx-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
             <div className="text-center">
               <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
                 <svg className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -94,7 +94,7 @@ const CreateNewContent = () => {
                 You have used all your credits ({totalUsage.toLocaleString()}/{formatCreditLimit(creditLimit)} words). 
                 Please upgrade your plan to continue generating content.
               </p>
-              <div className="flex gap-3 justify-center">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Button 
                   onClick={() => setShowCreditAlert(false)}
                   variant="outline"
@@ -117,14 +117,16 @@ const CreateNewContent = () => {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 p-5">
-        <FormSection
-          selectedTemplate={selectedTemplate}
-          userFormInput={GenerateAIContent}
-          loading={loading}
-          hasExceededCredits={hasExceededCredits}
-        />
-        <div className="col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-1">
+          <FormSection
+            selectedTemplate={selectedTemplate}
+            userFormInput={GenerateAIContent}
+            loading={loading}
+            hasExceededCredits={hasExceededCredits}
+          />
+        </div>
+        <div className="lg:col-span-2">
           <OutputSection aiOutput={aiOutput} />
         </div>
       </div>

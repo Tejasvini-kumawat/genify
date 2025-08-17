@@ -119,9 +119,9 @@ const BillingContent = () => {
   };
 
   return (
-    <div className="p-10">
+    <div className="p-4 lg:p-10 space-y-6">
       <Link href="/dashboard">
-        <Button variant="outline" className="mb-6">
+        <Button variant="outline" className="mb-4 lg:mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Dashboard
         </Button>
@@ -129,25 +129,25 @@ const BillingContent = () => {
 
       {/* Success/Error Messages */}
       {message && (
-        <div className={`mb-6 p-4 rounded-lg ${
+        <div className={`p-4 rounded-lg ${
           message.type === 'success' 
             ? 'bg-green-50 border border-green-200 text-green-800' 
             : 'bg-red-50 border border-red-200 text-red-800'
         }`}>
           <div className="flex items-center">
             {message.type === 'success' ? (
-              <Check className="w-5 h-5 mr-2" />
+              <Check className="w-5 h-5 mr-2 flex-shrink-0" />
             ) : (
-              <Crown className="w-5 h-5 mr-2" />
+              <Crown className="w-5 h-5 mr-2 flex-shrink-0" />
             )}
-            {message.text}
+            <span className="text-sm lg:text-base">{message.text}</span>
           </div>
         </div>
       )}
 
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Choose Your Plan</h1>
-        <p className="text-gray-600">
+      <div className="text-center mb-6 lg:mb-8">
+        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Choose Your Plan</h1>
+        <p className="text-gray-600 text-sm lg:text-base">
           {totalUsage >= 10000 
             ? "You've exceeded your free credits. Upgrade to continue generating content!"
             : "Select the perfect plan for your content creation needs"
@@ -162,11 +162,11 @@ const BillingContent = () => {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 max-w-6xl mx-auto">
         {plans.map((plan, index) => (
           <div
             key={index}
-            className={`relative p-6 border rounded-lg shadow-sm ${
+            className={`relative p-4 lg:p-6 border rounded-lg shadow-sm ${
               plan.popular 
                 ? 'border-primary bg-gradient-genify-subtle' 
                 : 'border-gray-200 bg-white'
@@ -181,12 +181,12 @@ const BillingContent = () => {
               </div>
             )}
 
-            <div className="text-center mb-6">
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">{plan.name}</h3>
+            <div className="text-center mb-4 lg:mb-6">
+              <h3 className="text-lg lg:text-xl font-semibold text-gray-900 mb-2">{plan.name}</h3>
               <div className="mb-2">
-                <span className="text-3xl font-bold text-gray-900">{plan.price}</span>
+                <span className="text-2xl lg:text-3xl font-bold text-gray-900">{plan.price}</span>
                 {plan.period && (
-                  <span className="text-gray-600">{plan.period}</span>
+                  <span className="text-gray-600 text-sm lg:text-base">{plan.period}</span>
                 )}
               </div>
               <p className="text-sm text-gray-600 mb-4">{plan.credits}</p>
@@ -197,46 +197,32 @@ const BillingContent = () => {
                 </Button>
               ) : (
                 <Button 
-                  className={`w-full ${plan.popular ? 'bg-gradient-genify hover:opacity-90 text-white' : ''}`}
                   onClick={() => handleUpgrade(plan.name, plan.priceId)}
                   disabled={loading === plan.name}
+                  className="w-full"
                 >
                   {loading === plan.name ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                       Processing...
                     </>
-                  ) : plan.popular ? (
-                    <>
-                      <Zap className="w-4 h-4 mr-2" />
-                      Upgrade Now
-                    </>
                   ) : (
-                    'Get Started'
+                    'Upgrade Now'
                   )}
                 </Button>
               )}
             </div>
 
-            <ul className="space-y-3">
+            <div className="space-y-2">
               {plan.features.map((feature, featureIndex) => (
-                <li key={featureIndex} className="flex items-center text-sm">
-                  <Check className="w-4 h-4 text-green-500 mr-3 flex-shrink-0" />
+                <div key={featureIndex} className="flex items-center text-sm">
+                  <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
                   <span className="text-gray-700">{feature}</span>
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         ))}
-      </div>
-
-      <div className="mt-12 text-center">
-        <p className="text-gray-600 mb-4">
-          Need a custom plan? Contact our sales team
-        </p>
-        <Button variant="outline">
-          Contact Sales
-        </Button>
       </div>
     </div>
   );
