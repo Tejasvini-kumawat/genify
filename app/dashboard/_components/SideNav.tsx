@@ -84,11 +84,10 @@ const SideNav = ({ onClose }: SideNavProps) => {
             <h2 className='text-lg'>{item.name}</h2>
           </Link>
         ))}
-      </div >
-      <div className='absolute bottom-10 left-0 w-full px-5' >
-  <UsageTrack />
       </div>
-    
+      <div className='absolute bottom-10 left-0 w-full px-5'>
+        <UsageTrack />
+      </div>
     </div>
   )
 }

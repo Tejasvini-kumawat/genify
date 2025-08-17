@@ -3,8 +3,6 @@ import React, { useState } from 'react'
 import SideNav from './_components/SideNav';
 import Header from './_components/Header';
 import { UsageContextProvider } from './_components/UsageContext';
-import { Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
 const layout = ({
     children,
@@ -15,7 +13,7 @@ const layout = ({
 
   return (
     <UsageContextProvider>
-      <div className='bg-slate-100 dark:bg-black min-h-screen'>
+      <div className='bg-slate-100 dark:bg-black min-h-screen flex'>
         {/* Mobile Sidebar Overlay */}
         {isSidebarOpen && (
           <div 
@@ -27,12 +25,12 @@ const layout = ({
         {/* Sidebar */}
         <div className={`fixed top-0 left-0 h-full z-50 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:relative lg:translate-x-0`}>
+        } lg:relative lg:translate-x-0 lg:flex-shrink-0`}>
           <SideNav onClose={() => setIsSidebarOpen(false)} />
         </div>
 
         {/* Main Content */}
-        <div className='lg:ml-64 min-h-screen'>
+        <div className='flex-1 lg:ml-0'>
           <Header onMenuClick={() => setIsSidebarOpen(true)} />
           <div className='p-4 lg:p-6'>
             {children}
